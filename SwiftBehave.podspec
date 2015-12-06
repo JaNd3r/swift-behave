@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/JaNd3r/swift-behave.git", :tag => "0.0.1" }
 
-  s.source_files  = "*.{h,m,swift}"
+  s.source_files  = "SwiftBehave/*.{h,m,swift}"
 
 end
