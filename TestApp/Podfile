@@ -7,7 +7,6 @@ post_install do |installer_representation|
     installer_representation.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['FRAMEWORK_SEARCH_PATHS'] = [ '$(PLATFORM_DIR)/Developer/Library/Frameworks' ]
-            config.build_settings['ENABLE_BITCODE'] = 0
         end
     end
 end
