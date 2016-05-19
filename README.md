@@ -7,7 +7,10 @@ Behaviour-driven testing framework on top of the Xcode UI Tests that allows to d
 
 ## Roadmap
 
+### Done
 * "Playback" plain text files that define test cases in the Given/When/Then form.
   * Create a simple test app to demonstrate how swift-behave works
+
+### TODO
 * Gather test execution information and present results
 * Build some level of IDE integration with Xcode
