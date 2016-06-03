@@ -112,8 +112,20 @@ public extension XCTestCase {
                 
                 if (keyElem.hasPrefix("$")) {
                     parameterNames.append(keyElem.substringFromIndex(keyElem.startIndex.advancedBy(1)))
-                    parameterValues.append(stepArray[index])
+                    
+                    var tempParameterString = stepArray[index]
                     index += 1
+
+                    // if value starts with '"' include all components until the closing '"'
+                    if (tempParameterString.hasPrefix("\"")) {
+                        tempParameterString = tempParameterString.substringFromIndex(tempParameterString.startIndex.advancedBy(1))
+                        while (!tempParameterString.hasSuffix("\"")) {
+                            tempParameterString = "\(tempParameterString) \(stepArray[index])"
+                            index += 1
+                        }
+                        tempParameterString = tempParameterString.substringToIndex(tempParameterString.endIndex.advancedBy(-1))
+                    }
+                    parameterValues.append(tempParameterString)
                     continue
                 }
                 
