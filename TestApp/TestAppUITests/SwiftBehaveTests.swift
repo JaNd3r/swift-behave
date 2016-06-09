@@ -29,7 +29,9 @@ public extension XCTestCase {
             
             print("### Running test '\(filename)")
             app.launch()
-            
+            // Wait for launch screen to disappear
+            NSThread.sleepForTimeInterval(0.5)
+
             for testStep in testArray {
                 if (testStep.characters.count == 0) {
                     continue
