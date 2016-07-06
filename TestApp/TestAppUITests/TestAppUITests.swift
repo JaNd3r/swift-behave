@@ -6,11 +6,9 @@
 //  Copyright © 2015 Christian Klaproth. All rights reserved.
 //
 
-import XCTest
-
-class TestAppUITests: XCTestCase {
+extension SwiftBehaveTest {
     
-    override func mappingFromPlist() -> Dictionary<String, String> {
+    func mappingFromPlist() -> Dictionary<String, String> {
         
         var mapping: Dictionary<String, String> = Dictionary()
         
@@ -22,10 +20,6 @@ class TestAppUITests: XCTestCase {
         mapping["I delete the item at position $position"] = "whenDeleteItemAtPosition"
         
         return mapping
-    }
-    
-    func testExample() {
-        self.testStories()
     }
     
     // MARK: -

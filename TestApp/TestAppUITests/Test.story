@@ -13,14 +13,19 @@ Scenario: Create multiple items
 Given the main view is shown
 When I tap the add button
 And I tap the add button
+And I tap the add button
 Then I expect to see 3 items
 
 Scenario: Navigate to details
 Given the main view is shown
-When I tap on item at position 1
+When I tap the add button
+And I tap the add button
+And I tap on item at position 1
 Then I expect to see the details
 
 Scenario: Delete items
 Given the main view is shown
-When I delete the item at position 2
-Then I expect to see 2 items
+When I tap the add button
+And I tap the add button
+And I delete the item at position 2
+Then I expect to see 1 items

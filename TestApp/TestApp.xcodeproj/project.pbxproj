@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1D15CAF01CE1D9770073408B /* Test.story in Resources */ = {isa = PBXBuildFile; fileRef = 1D15CAEF1CE1D9770073408B /* Test.story */; };
-		1D15CAF61CE1E8FA0073408B /* SwiftBehaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D15CAF51CE1E8FA0073408B /* SwiftBehaveTests.swift */; };
 		1D378D781C11AA07001826DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D378D771C11AA07001826DE /* AppDelegate.swift */; };
 		1D378D7A1C11AA07001826DE /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D378D791C11AA07001826DE /* MasterViewController.swift */; };
 		1D378D7C1C11AA07001826DE /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D378D7B1C11AA07001826DE /* DetailViewController.swift */; };
@@ -16,6 +15,10 @@
 		1D378D811C11AA07001826DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D378D801C11AA07001826DE /* Assets.xcassets */; };
 		1D378D841C11AA07001826DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D378D821C11AA07001826DE /* LaunchScreen.storyboard */; };
 		1D378D8F1C11AA08001826DE /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D378D8E1C11AA08001826DE /* TestAppUITests.swift */; };
+		1D69D3731D2D149400297A50 /* SwiftBehaveTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D69D36E1D2D149400297A50 /* SwiftBehaveTest.swift */; };
+		1D69D3741D2D149400297A50 /* Scenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D69D3701D2D149400297A50 /* Scenario.m */; };
+		1D69D3751D2D149400297A50 /* ScenarioTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D69D3721D2D149400297A50 /* ScenarioTestCase.m */; };
+		1D69D3771D2D156A00297A50 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D69D3761D2D156A00297A50 /* Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +34,6 @@
 /* Begin PBXFileReference section */
 		1D15CAEF1CE1D9770073408B /* Test.story */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Test.story; sourceTree = "<group>"; };
 		1D15CAF11CE1E5530073408B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		1D15CAF51CE1E8FA0073408B /* SwiftBehaveTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBehaveTests.swift; sourceTree = "<group>"; };
 		1D378D741C11AA07001826DE /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D378D771C11AA07001826DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1D378D791C11AA07001826DE /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +45,13 @@
 		1D378D8A1C11AA08001826DE /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D378D8E1C11AA08001826DE /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		1D378D901C11AA08001826DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1D69D36D1D2D149300297A50 /* TestAppUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestAppUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		1D69D36E1D2D149400297A50 /* SwiftBehaveTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBehaveTest.swift; sourceTree = "<group>"; };
+		1D69D36F1D2D149400297A50 /* Scenario.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scenario.h; sourceTree = "<group>"; };
+		1D69D3701D2D149400297A50 /* Scenario.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scenario.m; sourceTree = "<group>"; };
+		1D69D3711D2D149400297A50 /* ScenarioTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenarioTestCase.h; sourceTree = "<group>"; };
+		1D69D3721D2D149400297A50 /* ScenarioTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenarioTestCase.m; sourceTree = "<group>"; };
+		1D69D3761D2D156A00297A50 /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		612335B71225037BC499A55C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A31FBE7BA1B1E041D188723D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B978FFC3871FD4623D53289A /* Pods-TestAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestAppUITests/Pods-TestAppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -104,10 +113,16 @@
 		1D378D8D1C11AA08001826DE /* TestAppUITests */ = {
 			isa = PBXGroup;
 			children = (
-				1D15CAF51CE1E8FA0073408B /* SwiftBehaveTests.swift */,
+				1D69D36E1D2D149400297A50 /* SwiftBehaveTest.swift */,
+				1D69D36F1D2D149400297A50 /* Scenario.h */,
+				1D69D3701D2D149400297A50 /* Scenario.m */,
+				1D69D3711D2D149400297A50 /* ScenarioTestCase.h */,
+				1D69D3721D2D149400297A50 /* ScenarioTestCase.m */,
 				1D378D8E1C11AA08001826DE /* TestAppUITests.swift */,
+				1D69D3761D2D156A00297A50 /* Test.swift */,
 				1D15CAEF1CE1D9770073408B /* Test.story */,
 				1D378D901C11AA08001826DE /* Info.plist */,
+				1D69D36D1D2D149300297A50 /* TestAppUITests-Bridging-Header.h */,
 			);
 			path = TestAppUITests;
 			sourceTree = "<group>";
@@ -175,7 +190,7 @@
 		1D378D6C1C11AA07001826DE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Christian Klaproth";
 				TargetAttributes = {
@@ -243,8 +258,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D15CAF61CE1E8FA0073408B /* SwiftBehaveTests.swift in Sources */,
+				1D69D3741D2D149400297A50 /* Scenario.m in Sources */,
 				1D378D8F1C11AA08001826DE /* TestAppUITests.swift in Sources */,
+				1D69D3771D2D156A00297A50 /* Test.swift in Sources */,
+				1D69D3731D2D149400297A50 /* SwiftBehaveTest.swift in Sources */,
+				1D69D3751D2D149400297A50 /* ScenarioTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,11 +406,14 @@
 		1D378D971C11AA08001826DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.cm-works.ios.TestAppUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TestAppUITests/TestAppUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_TARGET_NAME = TestApp;
 				USES_XCTRUNNER = YES;
 			};
@@ -401,11 +422,13 @@
 		1D378D981C11AA08001826DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.cm-works.ios.TestAppUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TestAppUITests/TestAppUITests-Bridging-Header.h";
 				TEST_TARGET_NAME = TestApp;
 				USES_XCTRUNNER = YES;
 			};
