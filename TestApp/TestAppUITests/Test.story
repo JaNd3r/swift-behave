@@ -14,7 +14,7 @@ Given the main view is shown
 When I tap the add button
 And I tap the add button
 And I tap the add button
-Then I expect to see 3 items
+Then I expect to see "3" items
 
 Scenario: Navigate to details
 Given the main view is shown
