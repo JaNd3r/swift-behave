@@ -5,12 +5,37 @@ Behaviour-driven testing framework on top of the Xcode UI Tests that allows to d
 **When** you want to use these test cases with Xcode UI Tests  
 **Then** you should give _swift-behave_ a try  
 
+## Usage
+
+For now, *swift-behave* is used by simply dropping the following files into your UITests folder. 
+
+    Scneario.h
+    Scenario.m
+    ScenarioTestCase.h
+    ScenarioTestCase.m
+    SwiftBehaveTest.swift
+
+Since some of the code is written in Objective-C Xcode will ask you to create a bridgning header within the UITest target. Add the header files to the bridging header as follows.
+
+```objc
+#import "Scneario.h"
+#import "ScenarioTestCase.h"
+```
+
+Next steps (work in progress, to be detailed):
+* Write a Swift extension of SwiftBehaveTest containing your implementations for the behaviour-driven text blocks.
+* Write a `.story` file containing your test in given/when/then syntax.
+* Create a Swift class extending SwiftBehaveTest and name it like your `.story` file. You should have a pair of test classes, e.g. `MyTest.story`and `MyTest.swift`. 
+* In `MyTest.swift` override the static method `storyfile` to return the plain name of your test. I'm currently looking into this to get rid of this step.
+* Run the tests within Xcode with `command U` or from the commandline using `xcodebuild test`.
+
 ## Roadmap
 
 ### Done
 * "Playback" plain text files that define test cases in the Given/When/Then form.
-  * Create a simple test app to demonstrate how swift-behave works
+  * Create a simple test app to demonstrate how *swift-behave* works
+* Gather test execution information and present results
 
 ### TODO
-* Gather test execution information and present results
+* Create documentation of the steps neccessary to get started with *swift-behave*.
 * Build some level of IDE integration with Xcode
