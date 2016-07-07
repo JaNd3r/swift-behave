@@ -29,6 +29,18 @@ Next steps (work in progress, to be detailed):
 * In `MyTest.swift` override the static method `storyfile` to return the plain name of your test. I'm currently looking into this to get rid of this step.
 * Run the tests within Xcode with `command U` or from the commandline using `xcodebuild test`.
 
+## Example
+
+Check out the example app that is included in this repository. I recommend using [xcpretty](https://github.com/supermarin/xcpretty) if you want to see the test results outside of Xcode. Run the test from the command line with the following command.
+
+```bash
+xcodebuild -scheme TestApp -destination 'platform=iOS Simulator,name=iPhone 5s,OS=9.3' test | xcpretty -r html
+```
+
+This will build the app and test target, execute the tests and produce the following test report.
+
+![](Images/swift-behave_output.png)
+
 ## Roadmap
 
 ### Done
