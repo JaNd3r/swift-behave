@@ -50,6 +50,7 @@ This will build the app and test target, execute the tests and produce the follo
 
 ### TODO
 * Create an eye-catchy banner thing for this project.
+* Add a launch hook to allow adding launch arguments or to specify the initial device orientation.
 * Get rid of static override in SwiftBehaveTest subclasses.
 * Find an alternative way of distributing *swift-behave* than the current file drop-in.
 * Create documentation of the steps neccessary to get started with *swift-behave*.
