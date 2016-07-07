@@ -49,5 +49,8 @@ This will build the app and test target, execute the tests and produce the follo
 * Gather test execution information and present results
 
 ### TODO
+* Create an eye-catchy banner thing for this project.
+* Get rid of static override in SwiftBehaveTest subclasses.
+* Find an alternative way of distributing *swift-behave* than the current file drop-in.
 * Create documentation of the steps neccessary to get started with *swift-behave*.
 * Build some level of IDE integration with Xcode
