@@ -46,12 +46,13 @@ This will build the app and test target, execute the tests and produce the follo
 
 ### Done
 * "Playback" plain text files that define test cases in the Given/When/Then form.
-  * Create a simple test app to demonstrate how *swift-behave* works
+* Create a simple test app to demonstrate how *swift-behave* works
 * Gather test execution information and present results
+* Create an eye-catchy banner thing for this project.
 
 ### TODO
-* Create an eye-catchy banner thing for this project.
 * Add a launch hook to allow adding launch arguments or to specify the initial device orientation.
+* Integrate test step execution logging with the overall test log to see which step of a test caused it to fail.
 * Get rid of static override in SwiftBehaveTest subclasses.
 * Find an alternative way of distributing *swift-behave* than the current file drop-in.
 * Create documentation of the steps neccessary to get started with *swift-behave*.
