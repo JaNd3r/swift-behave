@@ -32,13 +32,27 @@ Next steps (work in progress, to be detailed):
 
 ## Example
 
-Check out the example app that is included in this repository. I recommend using [xcpretty](https://github.com/supermarin/xcpretty) if you want to see the test results outside of Xcode. Run the test from the command line with the following command.
+Check out the example app that is included in this repository. The app is basically the master-detail-template provided by Apple. Find the ´Test.story´ file to see, how tests are specified using a natural and readable language.
+
+```
+Scenario: Check initial list is empty
+Given the main view is shown
+Then I expect to see 0 items
+
+Scenario: Create one item
+Given the main view is shown
+When I tap the add button
+Then I expect to see 1 items
+...
+```
+
+I recommend using [xcpretty](https://github.com/supermarin/xcpretty) if you want to see the test results outside of Xcode. Run the test from the command line with the following command.
 
 ```bash
 xcodebuild -scheme TestApp -destination 'platform=iOS Simulator,name=iPhone 5s,OS=9.3' test | xcpretty -r html
 ```
 
-This will build the app and test target, execute the tests and produce the following test report.
+This will build the app and test target, execute the tests and produce the following test report. Note, that the scenario names are used as the test case names in the test report.
 
 ![](Images/swift-behave_output.png)
 
