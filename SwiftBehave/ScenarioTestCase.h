@@ -10,14 +10,14 @@
 
 @interface ScenarioTestCase : XCTestCase
 
-+ (void)addScenarioWithName:(NSString*)scenarioName steps:(NSArray*)steps testSuite:(XCTestSuite*)suite;
++ (void)addScenarioWithName:(NSString* _Nonnull)scenarioName steps:(NSArray* _Nonnull)steps testSuite:(XCTestSuite* _Nonnull)suite;
 
-+ (id)scenarios;
-+ (NSString*)storyfile;
++ (id _Nonnull)scenarios;
++ (NSString* _Nonnull)storyfile;
 
-@property (nonatomic) NSString* scenarioName;
-@property (nonatomic) NSArray* steps;
+@property (nonatomic) NSString* _Nonnull scenarioName;
+@property (nonatomic) NSArray* _Nonnull steps;
 
-- (instancetype)initWithInvocation:(NSInvocation*)invocation name:(NSString*)scenarioName steps:(NSArray*)steps;
+- (instancetype _Nonnull)initWithInvocation:(NSInvocation* _Nonnull)invocation name:(NSString* _Nonnull)scenarioName steps:(NSArray* _Nonnull)steps;
 
 @end
