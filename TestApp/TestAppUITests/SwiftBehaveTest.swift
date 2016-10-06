@@ -102,29 +102,25 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         print("Executing '\(scenarioName)' in \(self.dynamicType) with \(steps.count) steps.")
         
         for testStep in steps as! Array<String> {
-            // finde func fuer testStep
+            var success = false
+            
+            // find func for testStep
             if (testStep.hasPrefix("Given ")) {
                 let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(6))
-                self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
-                continue
-            }
-            
-            if (testStep.hasPrefix("When ")) {
+                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+            } else if (testStep.hasPrefix("When ")) {
                 let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(5))
-                self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
-                continue
-            }
-            
-            if (testStep.hasPrefix("Then ")) {
+                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+            } else if (testStep.hasPrefix("Then ")) {
                 let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(5))
-                self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
-                continue
-            }
-            
-            if (testStep.hasPrefix("And ")) {
+                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+            } else if (testStep.hasPrefix("And ")) {
                 let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(4))
-                self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
-                continue
+                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+            }
+            
+            if (!success) {
+                XCTFail("STEP FAILED: \(testStep)")
             }
         }
     }
@@ -146,17 +142,19 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 
                 if (keyElem.hasPrefix("$")) {
                     parameterNames.append(keyElem.substringFromIndex(keyElem.startIndex.advancedBy(1)))
-                    
                     var tempParameterString = stepArray[index]
                     index += 1
                     
-                    // if value starts with '"' include all components until the closing '"'
+                    // recognize components within '"' characters as a single parameter value
                     if (tempParameterString.hasPrefix("\"")) {
+                        // cut off preceding '"'
                         tempParameterString = tempParameterString.substringFromIndex(tempParameterString.startIndex.advancedBy(1))
                         while (!tempParameterString.hasSuffix("\"")) {
+                            // add to value until closing '"' is detected
                             tempParameterString = "\(tempParameterString) \(stepArray[index])"
                             index += 1
                         }
+                        // remove closing '"'
                         tempParameterString = tempParameterString.substringToIndex(tempParameterString.endIndex.advancedBy(-1))
                     }
                     
@@ -205,6 +203,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                             parameterDictionary[key] = value
                         }
                         self.performSelector(Selector.init("\(selectorString):parameters:"), withObject: app, withObject: parameterDictionary)
+                        return true
                     }
                 }
                 return false
@@ -212,4 +211,20 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         }
         return false
     }
+    
+    
+    // MARK: - helper function
+    
+    func waitForElementToAppear(element: XCUIElement) {
+        let predicate = NSPredicate(format: "exists == true")
+        expectationForPredicate(predicate, evaluatedWithObject: element, handler: nil)
+        waitForExpectationsWithTimeout(5.0, handler: nil)
+    }
+    
+    func waitForElementToDisappear(element: XCUIElement) {
+        let predicate = NSPredicate(format: "exists == false")
+        expectationForPredicate(predicate, evaluatedWithObject: element, handler: nil)
+        waitForExpectationsWithTimeout(5.0, handler: nil)
+    }
+
 }
