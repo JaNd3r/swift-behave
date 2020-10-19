@@ -19,7 +19,7 @@ For now, *swift-behave* is used by simply dropping the following files into your
 Since some of the code is written in Objective-C Xcode will ask you to create a bridgning header within the UITest target. Add the header files to the bridging header as follows.
 
 ```objc
-#import "Scneario.h"
+#import "Scenario.h"
 #import "ScenarioTestCase.h"
 ```
 
