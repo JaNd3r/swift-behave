@@ -25,11 +25,11 @@ extension SwiftBehaveTest {
     // MARK: -
     // MARK: BDD functions
 
-    func givenMainView(app: XCUIApplication) {
+    func givenMainView(_ app: XCUIApplication) {
         
         let detailNavigationBar = app.navigationBars["Detail"]
         if (detailNavigationBar.exists) {
-            detailNavigationBar.buttons.elementBoundByIndex(0).tap()
+            detailNavigationBar.buttons.element(boundBy: 0).tap()
         }
         
         let masterNavigationBar = app.navigationBars["Master"]
@@ -37,41 +37,41 @@ extension SwiftBehaveTest {
         XCTAssert(masterNavigationBar.exists, "main view could not be opened")
     }
     
-    func whenTapAddButton(app: XCUIApplication) {
+    func whenTapAddButton(_ app: XCUIApplication) {
         
         app.buttons["Add"].tap()
     }
     
-    func thenCheckItemCount(app: XCUIApplication, count: String) {
+    func thenCheckItemCount(_ app: XCUIApplication, count: String) {
         
         let expectedCount = UInt(count)!
-        let actualCount = app.tables.elementBoundByIndex(0).cells.count
+        let actualCount = app.tables.element(boundBy: 0).cells.count
         
         XCTAssert(expectedCount == actualCount, "actual item count (\(actualCount)) does not match expected item count (\(expectedCount))")
     }
     
-    func whenTapItemAtPosition(app: XCUIApplication, position: String) {
+    func whenTapItemAtPosition(_ app: XCUIApplication, position: String) {
         
         let index = UInt(position)! - 1
-        app.tables.elementBoundByIndex(0).cells.elementBoundByIndex(index).tap()
+        app.tables.element(boundBy: 0).cells.element(boundBy: Int(index)).tap()
     }
     
-    func thenDetailsVisible(app: XCUIApplication) {
+    func thenDetailsVisible(_ app: XCUIApplication) {
         
         let detailNavigationBar = app.navigationBars["Detail"]
         
         XCTAssert(detailNavigationBar.exists, "details not shown")
     }
     
-    func whenDeleteItemAtPosition(app: XCUIApplication, position: String) {
+    func whenDeleteItemAtPosition(_ app: XCUIApplication, position: String) {
         
         app.buttons["Edit"].tap()
         
         let index = UInt(position)! - 1
         // delete
-        app.tables.elementBoundByIndex(0).cells.elementBoundByIndex(index).buttons.elementBoundByIndex(0).tap()
+        app.tables.element(boundBy: 0).cells.element(boundBy: Int(index)).buttons.element(boundBy: 0).tap()
         // confirm
-        app.tables.elementBoundByIndex(0).cells.elementBoundByIndex(index).buttons["Delete"].tap()
+        app.tables.element(boundBy: 0).cells.element(boundBy: Int(index)).buttons["Delete"].tap()
         
         app.buttons["Done"].tap()
     }

@@ -21,22 +21,22 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         continueAfterFailure = true
         XCUIApplication().launch()
         // Wait for launch screen to disappear
-        NSThread.sleepForTimeInterval(0.5)
+        Thread.sleep(forTimeInterval: 0.5)
     }
     
     override func tearDown() {
         super.tearDown()
     }
 
-    @objc override static func scenarios() -> AnyObject {
+    override static func scenarios() -> Any {
         let filename = self.storyfile()
         
         var testArray: Array<String> = []
         
-        if let fullpath = NSBundle(forClass: SwiftBehaveTest.self).pathForResource(filename, ofType: "story") {
+        if let fullpath = Bundle(for: SwiftBehaveTest.self).path(forResource: filename, ofType: "story") {
             do {
-                let text = try String(contentsOfFile: fullpath, encoding: NSUTF8StringEncoding)
-                testArray = text.componentsSeparatedByString("\n")
+                let text = try String(contentsOfFile: fullpath, encoding: .utf8)
+                testArray = text.components(separatedBy: "\n")
             } catch _ as NSError {
                 print("error reading story file \(filename)")
                 return NSArray()
@@ -49,7 +49,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         
         for testStep in testArray {
             
-            if (testStep.characters.count == 0 || testStep.hasPrefix("Narrative:")) {
+            if (testStep.count == 0 || testStep.hasPrefix("Narrative:")) {
                 // ignore empty lines and introducing narrative line
                 continue
             }
@@ -57,7 +57,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
             if (testStep.hasPrefix("Scenario: ")) {
                 
                 // are we currently building a scenario?
-                if (currentName.characters.count > 0) {
+                if (currentName.count > 0) {
                     // then finish the current scenario...
                     let scenario = Scenario()
                     scenario.scenarioName = currentName;
@@ -65,12 +65,12 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                     
                     print("Adding scenario '\(currentName)' with \(currentSteps.count) steps.")
                     
-                    returnArray.addObject(scenario)
+                    returnArray.add(scenario)
                     currentSteps.removeAll()
                 }
                 
                 // ...and start a new scenario
-                currentName = testStep.substringFromIndex(testStep.startIndex.advancedBy(10))
+                currentName = String(testStep.suffix(from: testStep.index(testStep.startIndex, offsetBy: 10)))
                 print("Found start of test scenario '\(currentName)'")
                 continue
             }
@@ -79,7 +79,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         }
         
         // add the last (or single) scenario, if one was found
-        if (currentName.characters.count > 0) {
+        if (currentName.count > 0) {
             // then finish the current scenario...
             let scenario = Scenario()
             scenario.scenarioName = currentName;
@@ -87,7 +87,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
             
             print("Adding scenario '\(currentName)' with \(currentSteps.count) steps.")
             
-            returnArray.addObject(scenario)
+            returnArray.add(scenario)
         }
         
         print("Teststory '\(filename)' with \(returnArray.count) scenarios created.")
@@ -99,24 +99,24 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         let mapping = self.mappingFromPlist()
         let app = XCUIApplication()
         
-        print("Executing '\(scenarioName)' in \(self.dynamicType) with \(steps.count) steps.")
+        print("Executing '\(scenarioName)' in \(type(of: self)) with \(steps.count) steps.")
         
         for testStep in steps as! Array<String> {
             var success = false
             
             // find func for testStep
             if (testStep.hasPrefix("Given ")) {
-                let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(6))
-                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+                let plainStep = String(testStep.suffix(from: testStep.index(testStep.startIndex, offsetBy: 6)))
+                success = self.callSelector(for: plainStep, inDictionary: mapping, withApp: app)
             } else if (testStep.hasPrefix("When ")) {
-                let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(5))
-                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+                let plainStep = String(testStep.suffix(from: testStep.index(testStep.startIndex, offsetBy: 5)))
+                success = self.callSelector(for: plainStep, inDictionary: mapping, withApp: app)
             } else if (testStep.hasPrefix("Then ")) {
-                let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(5))
-                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+                let plainStep = String(testStep.suffix(from: testStep.index(testStep.startIndex, offsetBy: 5)))
+                success = self.callSelector(for: plainStep, inDictionary: mapping, withApp: app)
             } else if (testStep.hasPrefix("And ")) {
-                let plainStep = testStep.substringFromIndex(testStep.startIndex.advancedBy(4))
-                success = self.callSelectorFor(plainStep, inDictionary: mapping, withApp: app)
+                let plainStep = String(testStep.suffix(from: testStep.index(testStep.startIndex, offsetBy: 4)))
+                success = self.callSelector(for: plainStep, inDictionary: mapping, withApp: app)
             }
             
             if (!success) {
@@ -125,7 +125,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         }
     }
     
-    func callSelectorFor(step: String, inDictionary dict: Dictionary<String, String>, withApp app: XCUIApplication) -> Bool {
+    func callSelector(for step: String, inDictionary dict: Dictionary<String, String>, withApp app: XCUIApplication) -> Bool {
         
         for key in dict.keys {
 
@@ -135,27 +135,27 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
             var match = true
             var index = 0
             
-            let keyArray = key.componentsSeparatedByString(" ")
-            let stepArray = step.componentsSeparatedByString(" ")
+            let keyArray = key.components(separatedBy: " ")
+            let stepArray = step.components(separatedBy: " ")
             
             for keyElem in keyArray {
                 
                 if (keyElem.hasPrefix("$")) {
-                    parameterNames.append(keyElem.substringFromIndex(keyElem.startIndex.advancedBy(1)))
+                    parameterNames.append(String(keyElem.suffix(from: keyElem.index(keyElem.startIndex, offsetBy: 1))))
                     var tempParameterString = stepArray[index]
                     index += 1
                     
                     // recognize components within '"' characters as a single parameter value
                     if (tempParameterString.hasPrefix("\"")) {
                         // cut off preceding '"'
-                        tempParameterString = tempParameterString.substringFromIndex(tempParameterString.startIndex.advancedBy(1))
+                        tempParameterString = String(tempParameterString.suffix(from: tempParameterString.index(tempParameterString.startIndex, offsetBy: 1)))
                         while (!tempParameterString.hasSuffix("\"")) {
                             // add to value until closing '"' is detected
                             tempParameterString = "\(tempParameterString) \(stepArray[index])"
                             index += 1
                         }
                         // remove closing '"'
-                        tempParameterString = tempParameterString.substringToIndex(tempParameterString.endIndex.advancedBy(-1))
+                        tempParameterString = String(tempParameterString.prefix(tempParameterString.count - 1))
                     }
                     
                     parameterValues.append(tempParameterString)
@@ -178,7 +178,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 
                 if (parameterNames.count == 0) {
                     if let selectorString = dict[key] {
-                        self.performSelector(Selector.init("\(selectorString):"), withObject: app)
+                        self.perform(Selector.init("\(selectorString):"), with: app)
                         return true
                     }
                 }
@@ -188,7 +188,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 
                 if (parameterNames.count == 1) {
                     if let selectorString = dict[key] {
-                        self.performSelector(Selector.init("\(selectorString):\(parameterNames[0]):"), withObject: app, withObject: parameterValues[0])
+                        self.perform(Selector.init("\(selectorString):\(parameterNames[0]):"), with: app, with: parameterValues[0])
                         return true
                     }
                 }
@@ -202,7 +202,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                         for (key, value) in zip(parameterNames, parameterValues) {
                             parameterDictionary[key] = value
                         }
-                        self.performSelector(Selector.init("\(selectorString):parameters:"), withObject: app, withObject: parameterDictionary)
+                        self.perform(Selector.init("\(selectorString):parameters:"), with: app, with: parameterDictionary)
                         return true
                     }
                 }
@@ -217,14 +217,14 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
     
     func waitForElementToAppear(element: XCUIElement) {
         let predicate = NSPredicate(format: "exists == true")
-        expectationForPredicate(predicate, evaluatedWithObject: element, handler: nil)
-        waitForExpectationsWithTimeout(5.0, handler: nil)
+        expectation(for: predicate, evaluatedWith: element, handler: nil)
+        waitForExpectations(timeout: 5.0, handler: nil)
     }
     
     func waitForElementToDisappear(element: XCUIElement) {
         let predicate = NSPredicate(format: "exists == false")
-        expectationForPredicate(predicate, evaluatedWithObject: element, handler: nil)
-        waitForExpectationsWithTimeout(5.0, handler: nil)
+        expectation(for: predicate, evaluatedWith: element, handler: nil)
+        waitForExpectations(timeout: 5.0, handler: nil)
     }
 
 }
