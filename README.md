@@ -43,6 +43,11 @@ Scenario: Create one item
 Given the main view is shown
 When I tap the add button
 Then I expect to see 1 items
+
+Scenario: Create multiple items
+Given the main view is shown
+When I tap the add button 3 times
+Then I expect to see 3 items
 ...
 ```
 
