@@ -127,7 +127,21 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         }
     }
     
-    func callSelector(for step: String, inDictionary dict: Dictionary<String, String>, withApp app: XCUIApplication) -> Bool {
+    func callSelector(for stepText: String, inDictionary dict: Dictionary<String, String>, withApp app: XCUIApplication) -> Bool {
+        
+        var step = stepText
+        var repetitions = 1
+        
+        if step.hasSuffix(" times") {
+            let regex = try? NSRegularExpression(pattern: "\\d{1,2} times$", options: [])
+            let stepAsNsString = step as NSString
+            let results = regex?.matches(in: step, options: [], range: NSMakeRange(0, step.count))
+            if let timesMatch = results?.first {
+                let output = stepAsNsString.substring(with: timesMatch.range)
+                step = String(describing: step.prefix(step.count - output.count))
+                repetitions = Int(output.components(separatedBy: " ").first!)!
+            }
+        }
         
         for key in dict.keys {
 
@@ -180,7 +194,9 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 
                 if (parameterNames.count == 0) {
                     if let selectorString = dict[key] {
-                        self.perform(Selector.init("\(selectorString):"), with: app)
+                        for _ in 0..<repetitions {
+                            self.perform(Selector.init("\(selectorString):"), with: app)
+                        }
                         return true
                     }
                 }
@@ -190,7 +206,9 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 
                 if (parameterNames.count == 1) {
                     if let selectorString = dict[key] {
-                        self.perform(Selector.init("\(selectorString):\(parameterNames[0]):"), with: app, with: parameterValues[0])
+                        for _ in 0..<repetitions {
+                            self.perform(Selector.init("\(selectorString):\(parameterNames[0]):"), with: app, with: parameterValues[0])
+                        }
                         return true
                     }
                 }
@@ -204,7 +222,9 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                         for (key, value) in zip(parameterNames, parameterValues) {
                             parameterDictionary[key] = value
                         }
-                        self.perform(Selector.init("\(selectorString):parameters:"), with: app, with: parameterDictionary)
+                        for _ in 0..<repetitions {
+                            self.perform(Selector.init("\(selectorString):parameters:"), with: app, with: parameterDictionary)
+                        }
                         return true
                     }
                 }
