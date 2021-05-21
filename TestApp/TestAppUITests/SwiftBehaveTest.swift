@@ -19,7 +19,9 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
     override func setUp() {
         super.setUp()
         continueAfterFailure = true
-        XCUIApplication().launch()
+        let app = XCUIApplication()
+        app.launchArguments.append("SwiftBehaveTest")
+        app.launch()
         // Wait for launch screen to disappear
         Thread.sleep(forTimeInterval: 0.5)
     }
@@ -28,7 +30,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         super.tearDown()
     }
 
-    override static func scenarios() -> Any {
+    override static func scenarios() -> [Any] {
         let filename = self.storyfile()
         
         var testArray: Array<String> = []
@@ -39,13 +41,13 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 testArray = text.components(separatedBy: "\n")
             } catch _ as NSError {
                 print("error reading story file \(filename)")
-                return NSArray()
+                return Array.init()
             }
         }
         
         var currentName = ""
         var currentSteps = Array<String>()
-        let returnArray = NSMutableArray()
+        var returnArray = [Any]()
         
         for testStep in testArray {
             
@@ -60,12 +62,12 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 if (currentName.count > 0) {
                     // then finish the current scenario...
                     let scenario = Scenario()
-                    scenario.scenarioName = currentName;
-                    scenario.steps = currentSteps;
+                    scenario.scenarioName = currentName
+                    scenario.steps = currentSteps
                     
                     print("Adding scenario '\(currentName)' with \(currentSteps.count) steps.")
                     
-                    returnArray.add(scenario)
+                    returnArray.append(scenario)
                     currentSteps.removeAll()
                 }
                 
@@ -82,12 +84,12 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         if (currentName.count > 0) {
             // then finish the current scenario...
             let scenario = Scenario()
-            scenario.scenarioName = currentName;
-            scenario.steps = currentSteps;
+            scenario.scenarioName = currentName
+            scenario.steps = currentSteps
             
             print("Adding scenario '\(currentName)' with \(currentSteps.count) steps.")
             
-            returnArray.add(scenario)
+            returnArray.append(scenario)
         }
         
         print("Teststory '\(filename)' with \(returnArray.count) scenarios created.")
