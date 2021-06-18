@@ -12,7 +12,7 @@
 
 + (void)addScenarioWithName:(NSString* _Nonnull)scenarioName steps:(NSArray* _Nonnull)steps testSuite:(XCTestSuite* _Nonnull)suite;
 
-+ (id _Nonnull)scenarios;
++ (NSArray* _Nonnull)scenarios;
 + (NSString* _Nonnull)storyfile;
 
 @property (nonatomic) NSString* _Nonnull scenarioName;
