@@ -51,8 +51,8 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         
         for testStep in testArray {
             
-            if (testStep.count == 0 || testStep.hasPrefix("Narrative:")) {
-                // ignore empty lines and introducing narrative line
+            if (testStep.count == 0 || testStep.hasPrefix("Narrative:") || testStep.hasPrefix("#")) {
+                // ignore empty lines, comments and introducing narrative line
                 continue
             }
             
