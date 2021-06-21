@@ -28,3 +28,13 @@ When I tap the add button
 And I tap the add button
 And I delete the item at position 2
 Then I expect to see 1 items
+
+Scenario Outline: Create items by example
+Given the main view is shown
+When I tap the add button <tapCount> times
+Then I expect to see <itemCount> items
+
+Examples:
+| tapCount | itemCount |
+|        1 |         1 |
+|        3 |         3 |
