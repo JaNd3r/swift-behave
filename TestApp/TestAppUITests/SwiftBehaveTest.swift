@@ -33,12 +33,12 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
     override static func scenarios() -> [Any] {
         let filename = self.storyfile()
         
-        var testArray: Array<String> = []
+        var storyFileContent: Array<String> = []
         
         if let fullpath = Bundle(for: SwiftBehaveTest.self).path(forResource: filename, ofType: "story") {
             do {
                 let text = try String(contentsOfFile: fullpath, encoding: .utf8)
-                testArray = text.components(separatedBy: "\n")
+                storyFileContent = text.components(separatedBy: "\n")
             } catch _ as NSError {
                 print("error reading story file \(filename)")
                 return Array.init()
@@ -47,54 +47,126 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         
         var currentName = ""
         var currentSteps = Array<String>()
+        var tableInProgress = false
+        var currentParams = Array<Dictionary<String, String>>()
+        var currentTableKeys = Array<String>() // array containing table headers
         var returnArray = [Any]()
         
-        for testStep in testArray {
+        for currentTextLine in storyFileContent {
             
-            if (testStep.count == 0 || testStep.hasPrefix("Narrative:") || testStep.hasPrefix("#")) {
+            if currentTextLine.count == 0 || currentTextLine.hasPrefix("Narrative:") || currentTextLine.hasPrefix("#") {
                 // ignore empty lines, comments and introducing narrative line
                 continue
             }
             
-            if (testStep.hasPrefix("Scenario: ")) {
+            if currentTextLine.hasPrefix("Examples:") {
+                // start parameter table
+                tableInProgress = true
+                continue
+            }
+            
+            if currentTextLine.hasPrefix("|") {
+                // table will work even without introducing "Examples:"
+                tableInProgress = true
+                if currentTableKeys.count == 0 {
+                    // extract row as keys
+                    currentTextLine.components(separatedBy: "|").forEach {
+                        currentTableKeys.append($0.trimmingCharacters(in: .whitespaces))
+                    }
+                } else {
+                    // extract row as values
+                    var values = [String]()
+                    currentTextLine.components(separatedBy: "|").forEach {
+                        values.append($0.trimmingCharacters(in: .whitespaces))
+                    }
+                    var row = Dictionary<String, String>()
+                    for index in 0...currentTableKeys.count-1 {
+                        row[currentTableKeys[index]] = values[index]
+                    }
+                    currentParams.append(row)
+                }
+                continue
+            }
+            
+            if currentTextLine.hasPrefix("Scenario: ") || currentTextLine.hasPrefix("Scenario Outline: ") {
                 
                 // are we currently building a scenario?
-                if (currentName.count > 0) {
+                if currentName.count > 0 {
                     // then finish the current scenario...
-                    let scenario = Scenario()
-                    scenario.scenarioName = currentName
-                    scenario.steps = currentSteps
-                    
-                    print("Adding scenario '\(currentName)' with \(currentSteps.count) steps.")
-                    
-                    returnArray.append(scenario)
+                    let scenarios = finishScenarioOrOutline(name: currentName, steps: currentSteps, params: currentParams)
+                    if tableInProgress {
+                        currentTableKeys.removeAll()
+                        currentParams.removeAll()
+                        tableInProgress = false
+                    }
                     currentSteps.removeAll()
+                    returnArray.append(contentsOf: scenarios)
                 }
                 
                 // ...and start a new scenario
-                currentName = String(testStep.suffix(from: testStep.index(testStep.startIndex, offsetBy: 10)))
+                currentName = currentTextLine.components(separatedBy: ":")[1].trimmingCharacters(in: .whitespaces)
                 print("Found start of test scenario '\(currentName)'")
                 continue
             }
             
-            currentSteps.append(testStep)
+            // treat line as normal test step
+            currentSteps.append(currentTextLine)
         }
         
         // add the last (or single) scenario, if one was found
-        if (currentName.count > 0) {
-            // then finish the current scenario...
-            let scenario = Scenario()
-            scenario.scenarioName = currentName
-            scenario.steps = currentSteps
-            
-            print("Adding scenario '\(currentName)' with \(currentSteps.count) steps.")
-            
-            returnArray.append(scenario)
+        if currentName.count > 0 {
+            // then finish the current scenario(s)...
+            returnArray.append(contentsOf: finishScenarioOrOutline(name: currentName, steps: currentSteps, params: currentParams))
+            // no need of clean up, methods ends anyway
         }
         
         print("Teststory '\(filename)' with \(returnArray.count) scenarios created.")
         
         return returnArray
+    }
+    
+    /**
+     * Finish a single scenario or a scenario outline (depending on the number of parameters given.
+     */
+    fileprivate static func finishScenarioOrOutline(name: String, steps: Array<String>, params: Array<Dictionary<String, String>>) -> [Any] {
+        var scenarioArray = [Any]()
+        
+        if params.count == 0 {
+            let scenario = Scenario()
+            scenario.scenarioName = name
+            scenario.steps = steps
+
+            print("Adding scenario '\(scenario.scenarioName!)' with \(steps.count) steps.")
+
+            scenarioArray.append(scenario)
+        } else {
+            var exampleCount = 1
+            for paramDict in params {
+                let scenario = Scenario()
+                scenario.scenarioName = "\(name) \(exampleCount)"
+                scenario.steps = replace(params: paramDict, in: steps)
+
+                print("Adding scenario '\(scenario.scenarioName!)' with \(steps.count) steps.")
+
+                scenarioArray.append(scenario)
+                exampleCount = exampleCount + 1
+            }
+        }
+        
+        return scenarioArray
+    }
+    
+    fileprivate static func replace(params: Dictionary<String, String>, in steps: Array<String>) -> [String] {
+        // check each parameter in each step
+        var replacedSteps = [String]()
+        for step in steps {
+            var replacingStep = step
+            for key in params.keys {
+                replacingStep = replacingStep.replacingOccurrences(of: "<\(key)>", with: params[key]!)
+            }
+            replacedSteps.append(replacingStep)
+        }
+        return replacedSteps
     }
     
     func testScenario() {
