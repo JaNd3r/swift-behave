@@ -1,10 +1,12 @@
 ![](Images/swift-behave.png)
 
-Behaviour-driven testing framework on top of the Xcode UI Tests that allows to define acceptance tests using a natural language that all team members understand.
+Behaviour-driven testing framework on top of the Xcode UI Tests that allows you to define acceptance tests using a natural language that all team members understand.
 
-**Given** you have a lot of test cases created with [JBehave](http://www.jbehave.org)  
-**When** you want to use these test cases with Xcode UI Tests  
+**Given** you have test scenarios written in natural language  
+**When** you want to execute these test scenarios with Xcode UI Tests  
 **Then** you should give _swift-behave_ a try  
+
+_swift-behave_ was inspired by [JBehave](http://www.jbehave.org).
 
 ## Usage
 
@@ -60,6 +62,10 @@ xcodebuild -scheme TestApp -destination 'platform=iOS Simulator,name=iPhone 5s,O
 This will build the app and test target, execute the tests and produce the following test report. Note, that the scenario names are used as the test case names in the test report.
 
 ![](Images/swift-behave_output.png)
+
+## IDE Support
+
+Unfortunately Appple has cut down the possibilities that custom Xcode plugins can offer to a minimum. That is the reason why there will be no Xcode editor plugin for _swift-behave_ anytime soon. As an alternative I can recommend using [BBEdit](https://www.barebones.com/products/bbedit/) which is also available for free. Copy the file `Resources/Gherkin.plist` to `~/Library/Application Support/BBEdit/Language Modules/` to have syntax highlighting for `.story` files in BBEdit, which improves readability a lot.
 
 ## Roadmap
 
