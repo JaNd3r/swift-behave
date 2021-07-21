@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BBEditDocumentType</key>
+	<string>CodelessLanguageModule</string>
+	<key>BBLMLanguageDisplayName</key>
+	<string>swift-behave Gherkin</string>
+	<key>BBLMLanguageCode</key>
+	<string>GRKN</string>
+	<key>BBLMSuffixMap</key>
+	<array>
+		<dict>
+			<key>BBLMLanguageSuffix</key>
+			<string>.story</string>
+		</dict>
+	</array>
+	<key>BBLMColorsSyntax</key>
+	<true/>
+	<key>BBLMKeywordList</key>
+	<array>
+        <string>Given</string>
+        <string>When</string>
+        <string>Then</string>
+        <string>And</string>
+        <string>Narrative</string>
+        <string>Scenario</string>
+        <string>Scenario Outline</string>
+        <string>Examples</string>
+    </array>
+    <key>BBLMCommentLineDefault</key>
+    <string>#</string>
+    <key>Language Features</key>
+    <dict>
+        <key>Identifier and Keyword Character Class</key>
+        <string>A-Za-z0-9_\?!</string>
+    </dict>
+</dict>
+</plist>
