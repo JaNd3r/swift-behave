@@ -22,7 +22,7 @@
     
     XCTestSuite* suite = [[XCTestSuite alloc] initWithName:NSStringFromClass(self)];
     for (Scenario* scenario in [self scenarios]) {
-        [self addScenarioWithName:scenario.scenarioName steps:scenario.steps testSuite:suite];
+        [self addScenarioWithName:scenario.scenarioName steps:scenario.steps environment:scenario.environment testSuite:suite];
     }
     return suite;
 }
@@ -32,7 +32,7 @@
     return @[];
 }
 
-+ (void)addScenarioWithName:(NSString*)scenarioName steps:(NSArray*)steps testSuite:(XCTestSuite*)suite
++ (void)addScenarioWithName:(NSString*)scenarioName steps:(NSArray*)steps environment:(NSDictionary<NSString*,NSString*>* _Nonnull)environment testSuite:(XCTestSuite*)suite
 {
     for (NSInvocation* invocation in [self testInvocations]) {
         
@@ -42,7 +42,7 @@
         SEL selector = [self addInstanceMethodForScenario:scenarioName];
         invocation.selector = selector;
         
-        XCTestCase* test = [[self alloc] initWithInvocation:invocation name:scenarioName steps:steps];
+        XCTestCase* test = [[self alloc] initWithInvocation:invocation name:scenarioName steps:steps environment:environment];
         [suite addTest:test];
     }
 }
@@ -53,12 +53,13 @@
     return @"OVERRIDE";
 }
 
-- (instancetype)initWithInvocation:(NSInvocation*)invocation name:(NSString*)scenarioName steps:(NSArray*)steps
+- (instancetype)initWithInvocation:(NSInvocation*)invocation name:(NSString*)scenarioName steps:(NSArray*)steps environment:(NSDictionary*)environment
 {
     self = [super initWithInvocation:invocation];
     if (self) {
         _scenarioName = scenarioName;
         _steps = steps;
+        _environment = environment;
     }
     
     return self;

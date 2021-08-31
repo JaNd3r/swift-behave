@@ -21,6 +21,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         continueAfterFailure = true
         let app = XCUIApplication()
         app.launchArguments.append("SwiftBehaveTest")
+        app.launchEnvironment = environment // passing on environment variables (see super class)
         app.launch()
         // Wait for launch screen to disappear
         Thread.sleep(forTimeInterval: 0.5)
@@ -51,11 +52,20 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         var currentParams = Array<Dictionary<String, String>>()
         var currentTableKeys = Array<String>() // array containing table headers
         var returnArray = [Any]()
+        var currentEnvironment = [String:String]()
         
         for currentTextLine in storyFileContent {
             
             if currentTextLine.count == 0 || currentTextLine.hasPrefix("Narrative:") || currentTextLine.hasPrefix("#") {
                 // ignore empty lines, comments and introducing narrative line
+                continue
+            }
+            
+            if currentTextLine.hasPrefix("@Environment(") {
+                // add an evironment variable
+                let expression = currentTextLine.dropFirst(13).dropLast(1)
+                let expressionComponents = expression.components(separatedBy: "=")
+                currentEnvironment[expressionComponents[0].trimmingCharacters(in: .whitespaces)] = expressionComponents[1].trimmingCharacters(in: .whitespaces)
                 continue
             }
             
@@ -93,13 +103,15 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 // are we currently building a scenario?
                 if currentName.count > 0 {
                     // then finish the current scenario...
-                    let scenarios = finishScenarioOrOutline(name: currentName, steps: currentSteps, params: currentParams)
+                    let scenarios = finishScenarioOrOutline(name: currentName, steps: currentSteps, params: currentParams, environment: currentEnvironment)
                     if tableInProgress {
                         currentTableKeys.removeAll()
                         currentParams.removeAll()
                         tableInProgress = false
                     }
                     currentSteps.removeAll()
+                    currentEnvironment.removeAll()
+                    
                     returnArray.append(contentsOf: scenarios)
                 }
                 
@@ -116,7 +128,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
         // add the last (or single) scenario, if one was found
         if currentName.count > 0 {
             // then finish the current scenario(s)...
-            returnArray.append(contentsOf: finishScenarioOrOutline(name: currentName, steps: currentSteps, params: currentParams))
+            returnArray.append(contentsOf: finishScenarioOrOutline(name: currentName, steps: currentSteps, params: currentParams, environment: currentEnvironment))
             // no need of clean up, methods ends anyway
         }
         
@@ -128,13 +140,14 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
     /**
      * Finish a single scenario or a scenario outline (depending on the number of parameters given.
      */
-    fileprivate static func finishScenarioOrOutline(name: String, steps: Array<String>, params: Array<Dictionary<String, String>>) -> [Any] {
+    fileprivate static func finishScenarioOrOutline(name: String, steps: Array<String>, params: Array<Dictionary<String, String>>, environment: Dictionary<String, String>) -> [Any] {
         var scenarioArray = [Any]()
         
         if params.count == 0 {
             let scenario = Scenario()
             scenario.scenarioName = name
             scenario.steps = steps
+            scenario.environment = environment
 
             print("Adding scenario '\(scenario.scenarioName!)' with \(steps.count) steps.")
 
@@ -145,6 +158,7 @@ class SwiftBehaveTest: ScenarioTestCase, MappingProvider {
                 let scenario = Scenario()
                 scenario.scenarioName = "\(name) \(exampleCount)"
                 scenario.steps = replace(params: paramDict, in: steps)
+                scenario.environment = environment
 
                 print("Adding scenario '\(scenario.scenarioName!)' with \(steps.count) steps.")
 
