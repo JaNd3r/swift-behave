@@ -12,5 +12,6 @@
 
 @property (nonatomic) NSString* scenarioName;
 @property (nonatomic) NSArray* steps;
+@property (nonatomic) NSDictionary<NSString*,NSString*>* environment;
 
 @end
